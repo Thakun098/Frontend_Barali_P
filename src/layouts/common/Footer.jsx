@@ -22,10 +22,10 @@ const Footer = () => {
           </Col>
 
           {/* ขวา: โลโก้ใบรับรอง */}
-          <Col md={6} className="d-flex justify-content-md-end justify-content-center gap-3">
-            <img src="/sha-plus.png" alt="SHA Plus" height="50" />
-            <img src="/holiday-Check.png" alt="HolidayCheck Award" height="50" />
-            <img src="/paradise.png" alt="Unseen Paradise" height="50" />
+          <Col md={6} className="d-flex justify-content-md-end justify-content-center gap-4 mt-4 mt-md-0">
+            <img src="/sha-plus.png" alt="SHA Plus" height="70" />
+            <img src="/holiday-Check.png" alt="HolidayCheck Award" height="70" />
+            <img src="/paradise.png" alt="Unseen Paradise" height="70" />
           </Col>
         </Row>
       </Container>

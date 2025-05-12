@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -66,7 +67,7 @@ const AccommodationCard = ({ accommodation }) => {
                             <i className="bi bi-book me-2"></i>รายละเอียดห้องพัก
                         </Button>
                         <Button variant="primary">
-                            <i className="bi bi-hand-index-thumb me-2"></i>จองเลย
+                            <Icon icon="hugeicons:cursor-magic-selection-02" width="24" height="24" />จองเลย
                         </Button>
                     </div>
                 </Col>

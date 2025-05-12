@@ -1,12 +1,15 @@
 import Accommodation from "../../../components/accommodation/Accommodation"
 import Promotion from "../../../components/accommodation/Promotion"
+import Activity from "../../../components/activity/Activity"
+
 
 const HomePage = () => {
     return (
         <>
             <Accommodation />
             <Promotion />
-            <div className="bg-info bg-opacity-25 py-4 my-5 rounded">
+            <Activity />
+            <div className="bg-info bg-opacity-10 py-4 my-5 rounded">
   <div className="container">
     <div className="row">
       {/* คอลัมน์ที่ 1 */}

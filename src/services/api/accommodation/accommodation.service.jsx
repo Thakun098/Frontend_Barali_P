@@ -1,6 +1,6 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-import AuthHeader from "../../common/authHeader";
+import AuthHeader from "../../common/AuthHeader";
 
 const getAll = () => {
     return axios.get(`${BASE_URL}/api/accommodation`, { headers: AuthHeader() });
