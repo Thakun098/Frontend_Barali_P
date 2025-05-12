@@ -13,6 +13,11 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState('');
 
+    const isValidEmail = (email) => {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+};
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {};
@@ -20,7 +25,7 @@ const LoginPage = () => {
         // ตรวจสอบข้อมูล
         if (!email) {
             newErrors.email = 'กรุณากรอกอีเมล';
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
+        } else if (!isValidEmail(email)) {
             newErrors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
         }
 

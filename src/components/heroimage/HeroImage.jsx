@@ -93,6 +93,7 @@ const HeroImage = () => {
             width: "80%",
             zIndex: 3,
             
+            
           }}
         >
           <SearchBar />

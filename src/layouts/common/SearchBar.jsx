@@ -18,7 +18,7 @@ export default function SearchBar() {
   const [children, setChildren] = useState(0);
 
   return (
-    <Form className="bg-primary p-4 rounded shadow-sm mx-auto" style={{ maxWidth: '900px' }}>
+    <Form className="bg-primary p-4 rounded shadow-sm mx-auto" style={{ maxWidth: '900px'}}>
       <div className='bg-white p-2 rounded shadow-sm'>
         <Row className="align-items-end g-3">
           {/* Check-in */}
