@@ -34,9 +34,9 @@ const AccommodationCard = ({ accommodation }) => {
                     <p className="mb-1">ห้องว่าง : {accommodation.total_rooms} {accommodation.room_type}</p>
 
                     <ul className="list-unstyled mb-2">
-                        <li>📐 ขนาดห้อง {accommodation.room_size} ตารางเมตร</li>
-                        <li>🌄 วิว : {accommodation.room_view}</li>
-                        <li>🛏 {accommodation.bed_type}</li>
+                        <li><Icon icon="ri:custom-size" width="24" height="24" /> ขนาดห้อง {accommodation.room_size} ตารางเมตร</li>
+                        <li><Icon icon="tabler:window" width="24" height="24" /> วิว : {accommodation.room_view}</li>
+                        <li><Icon icon="tabler:bed" width="24" height="24" /> {accommodation.bed_type}</li>
                     </ul>
 
                     {/* ราคาหลังส่วนลด */}

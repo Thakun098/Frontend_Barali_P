@@ -1,54 +1,107 @@
 import { useState } from 'react';
 import {
   Form,
+  FormControl,
   Button,
   Row,
   Col,
-  Dropdown,
   DropdownButton,
   InputGroup
 } from 'react-bootstrap';
 import { FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import dayjs from 'dayjs';
+import "dayjs/locale/th";
+import th from 'date-fns/locale/th';
+import { registerLocale } from 'react-datepicker';
+registerLocale('th', th);
 
-export default function SearchBar() {
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
+export default function SearchBar({
+  initialCheckInDate = null,
+  initialCheckOutDate = null,
+  initializeAdults = 1,
+  initializeChildren = 0,
+}) {
+  const navigate = useNavigate();
+  const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
+  const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
+  const [adults, setAdults] = useState(initializeAdults);
+  const [children, setChildren] = useState(initializeChildren);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate("/search-results");
+  };
+
+  const datepickerCustomInput = ({ value, onClick, placeholder }) => (
+    <InputGroup>
+      <InputGroup.Text>
+        <FaCalendarAlt />
+      </InputGroup.Text>
+      <FormControl
+        placeholder={placeholder}
+        value={value}
+        onClick={onClick}
+        readOnly
+        className="bg-white"
+      />
+    </InputGroup>
+  );
 
   return (
-    <Form className="bg-info p-4 rounded bg-opacity-75 shadow-sm mx-auto" style={{ maxWidth: '900px'}}>
-      <div className='bg-white p-2 rounded shadow-sm'>
+    <Form
+      className="bg-info p-4 rounded bg-opacity-75 shadow-sm mx-auto"
+      style={{ maxWidth: '900px' }}
+      onSubmit={handleSearch}
+    >
+      <div className="bg-white p-2 rounded shadow-sm">
         <Row className="align-items-end g-3">
           {/* Check-in */}
           <Col md>
-            <InputGroup>
-              <InputGroup.Text>
-                <FaCalendarAlt />
-              </InputGroup.Text>
-              <Form.Control
-                type="date"
-                value={checkIn}
-                onChange={e => setCheckIn(e.target.value)}
-                placeholder="เช็คอิน"
-              />
-            </InputGroup>
+            <DatePicker
+              selected={checkInDate}
+              onChange={(date) => setCheckInDate(date)}
+              selectsStart
+              startDate={checkInDate}
+              endDate={checkOutDate}
+              minDate={new Date()}
+              dateFormat="dd/MM/yyyy"
+              locale="th"
+              placeholderText="เลือกวันที่เช็คอิน"
+              customInput={datepickerCustomInput({
+                value: checkInDate ? dayjs(checkInDate).format("DD/MM/YYYY") : "",
+                onClick: () => {},
+                placeholder: "เลือกวันที่เช็คอิน",
+              })}
+              popperContainer={({ children }) => (
+                <div style={{ zIndex: 2000, position: "relative" }}>{children}</div>
+              )}
+            />
           </Col>
 
           {/* Check-out */}
           <Col md>
-            <InputGroup>
-              <InputGroup.Text>
-                <FaCalendarAlt />
-              </InputGroup.Text>
-              <Form.Control
-                type="date"
-                value={checkOut}
-                onChange={e => setCheckOut(e.target.value)}
-                placeholder="เช็คเอาท์"
-              />
-            </InputGroup>
+            <DatePicker
+              selected={checkOutDate}
+              onChange={(date) => setCheckOutDate(date)}
+              selectsEnd
+              startDate={checkInDate}
+              endDate={checkOutDate}
+              minDate={checkInDate || new Date()}
+              dateFormat="dd/MM/yyyy"
+              locale="th"
+              placeholderText="เลือกวันที่เช็คเอาท์"
+              customInput={datepickerCustomInput({
+                value: checkOutDate ? dayjs(checkOutDate).format("DD/MM/YYYY") : "",
+                onClick: () => {},
+                placeholder: "เลือกวันที่เช็คเอาท์",
+              })}
+              popperContainer={({ children }) => (
+                <div style={{ zIndex: 2000, position: "relative" }}>{children}</div>
+              )}
+            />
           </Col>
 
           {/* Guests */}
@@ -87,7 +140,7 @@ export default function SearchBar() {
 
           {/* Search Button */}
           <Col xs="auto">
-            <Button variant="info" as={Link} to="/my-bookings" className="w-100 px-4 text-white">
+            <Button type="submit" variant="info" className="w-100 px-4 text-white">
               ค้นหา
             </Button>
           </Col>
