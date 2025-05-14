@@ -3,7 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Outlet } from "react-router-dom";
 import SearchBar from "../common/SearchBar";
 import Footer from "../../layouts/common/Footer";
-import HeroImage from "../../components/heroimage/HeroImage";
+// import HeroImage from "../../components/heroimage/HeroImage";
 
 
 
@@ -12,10 +12,10 @@ const MainLayout = () => {
   return (
     <>
       <Navbar isUser={isUser} logout={logout} />
-      <HeroImage />
-      <main className="container">
+      
+      
         <Outlet />
-      </main>
+      
       <Footer />
     </>
   )

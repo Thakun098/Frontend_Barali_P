@@ -33,7 +33,7 @@ const MainNavbar = ({ isUser, logout }) => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/" className="text-dark">หน้าแรก</Nav.Link>
-            <Nav.Link href="#villa" className="text-dark">วิลล่า</Nav.Link>
+            <Nav.Link href="/search-results" className="text-dark">วิลล่า</Nav.Link>
             <Nav.Link href="#location" className="text-dark">โลเคชั่น</Nav.Link>
             <Nav.Link href="#specials" className="text-dark">ข้อเสนอพิเศษ</Nav.Link>
           </Nav>

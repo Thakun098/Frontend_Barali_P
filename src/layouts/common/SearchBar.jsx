@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Form,
   FormControl,
@@ -9,46 +9,85 @@ import {
   InputGroup
 } from 'react-bootstrap';
 import { FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
 import "dayjs/locale/th";
 import th from 'date-fns/locale/th';
 import { registerLocale } from 'react-datepicker';
+
 registerLocale('th', th);
 
-export default function SearchBar({
-  initialCheckInDate = null,
-  initialCheckOutDate = null,
-  initializeAdults = 1,
-  initializeChildren = 0,
-}) {
+export default function SearchBar() {
   const navigate = useNavigate();
-  const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
-  const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
-  const [adults, setAdults] = useState(initializeAdults);
-  const [children, setChildren] = useState(initializeChildren);
+  const [searchParams] = useSearchParams();
 
-  const handleSearch = (e) => {
+  const [checkInDate, setCheckInDate] = useState(null);
+  const [checkOutDate, setCheckOutDate] = useState(null);
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const initialCheckIn = searchParams.get('checkIn');
+    const initialCheckOut = searchParams.get('checkOut');
+    const initialAdults = parseInt(searchParams.get('adults')) || 1;
+    const initialChildren = parseInt(searchParams.get('children')) || 0;
+
+    if (initialCheckIn) setCheckInDate(dayjs(initialCheckIn).toDate());
+    if (initialCheckOut) setCheckOutDate(dayjs(initialCheckOut).toDate());
+    setAdults(initialAdults);
+    setChildren(initialChildren);
+  }, [searchParams]);
+
+  const handleSearch = async (e) => {
     e.preventDefault();
-    navigate("/search-results");
+    setLoading(true);
+
+    const params = new URLSearchParams({
+      checkIn: checkInDate ? dayjs(checkInDate).format('YYYY-MM-DD') : '',
+      checkOut: checkOutDate ? dayjs(checkOutDate).format('YYYY-MM-DD') : '',
+      adults,
+      children,
+    });
+
+    await new Promise((res) => setTimeout(res, 500));
+    navigate(`/search-results?${params.toString()}`);
+    setLoading(false);
   };
 
-  const datepickerCustomInput = ({ value, onClick, placeholder }) => (
-    <InputGroup>
-      <InputGroup.Text>
-        <FaCalendarAlt />
-      </InputGroup.Text>
-      <FormControl
-        placeholder={placeholder}
-        value={value}
-        onClick={onClick}
-        readOnly
-        className="bg-white"
-      />
-    </InputGroup>
-  );
+  const datepickerCheckInInput = ({ value, onClick, placeholder }) => (
+  <InputGroup>
+    <InputGroup.Text>
+      <Icon icon="mdi:calendar-import-outline" width="24" height="24" />
+    </InputGroup.Text>
+    <FormControl
+      placeholder={placeholder}
+      value={value}
+      onClick={onClick}
+      readOnly
+      className="bg-white"
+    />
+  </InputGroup>
+);
+
+// Input สำหรับเช็คเอาท์
+const datepickerCheckOutInput = ({ value, onClick, placeholder }) => (
+  <InputGroup>
+    <InputGroup.Text>
+      <Icon icon="mdi:calendar-export-outline" width="24" height="24" />
+    </InputGroup.Text>
+    <FormControl
+      placeholder={placeholder}
+      value={value}
+      onClick={onClick}
+      readOnly
+      className="bg-white"
+    />
+  </InputGroup>
+);
 
   return (
     <Form
@@ -62,7 +101,12 @@ export default function SearchBar({
           <Col md>
             <DatePicker
               selected={checkInDate}
-              onChange={(date) => setCheckInDate(date)}
+              onChange={(date) => {
+                setCheckInDate(date);
+                if (!checkOutDate || dayjs(checkOutDate).isBefore(date)) {
+                  setCheckOutDate(dayjs(date).add(1, 'day').toDate());
+                }
+              }}
               selectsStart
               startDate={checkInDate}
               endDate={checkOutDate}
@@ -70,7 +114,7 @@ export default function SearchBar({
               dateFormat="dd/MM/yyyy"
               locale="th"
               placeholderText="เลือกวันที่เช็คอิน"
-              customInput={datepickerCustomInput({
+              customInput={datepickerCheckInInput({
                 value: checkInDate ? dayjs(checkInDate).format("DD/MM/YYYY") : "",
                 onClick: () => {},
                 placeholder: "เลือกวันที่เช็คอิน",
@@ -93,7 +137,7 @@ export default function SearchBar({
               dateFormat="dd/MM/yyyy"
               locale="th"
               placeholderText="เลือกวันที่เช็คเอาท์"
-              customInput={datepickerCustomInput({
+              customInput={datepickerCheckOutInput({
                 value: checkOutDate ? dayjs(checkOutDate).format("DD/MM/YYYY") : "",
                 onClick: () => {},
                 placeholder: "เลือกวันที่เช็คเอาท์",
@@ -140,8 +184,17 @@ export default function SearchBar({
 
           {/* Search Button */}
           <Col xs="auto">
-            <Button type="submit" variant="info" className="w-100 px-4 text-white">
-              ค้นหา
+            <Button
+              type="submit"
+              variant="info"
+              className="w-100 px-4 text-white"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              ) : (
+                "ค้นหา"
+              )}
             </Button>
           </Col>
         </Row>

@@ -68,8 +68,8 @@ const HeroImage = () => {
         {/* กล่องข้อความ */}
         <div
           style={{
-            width: "950px",
-            height: "250px",
+            width: "700px",
+            height: "200px",
             backgroundColor: "white",
             borderRadius: "12px",
             boxShadow: "0 0 10px rgba(0,0,0,0.2)",

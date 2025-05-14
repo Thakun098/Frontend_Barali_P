@@ -1,15 +1,23 @@
 import Accommodation from "../../../components/accommodation/Accommodation"
 import Promotion from "../../../components/accommodation/Promotion"
 import Activity from "../../../components/activity/Activity"
+import Popular from "../../../components/accommodation/Popular"
+import HeroImage from "../../../components/heroimage/HeroImage"
 
 
 const HomePage = () => {
     return (
         <>
-            <Accommodation />
-            <Promotion />
+        <HeroImage />
+        <div className="container">
+          <Popular />
+        </div>
+
+            <div className="container">
+                <Promotion />
+            </div>
             <Activity />
-            <div className="bg-info bg-opacity-10 py-4 my-5 rounded">
+            <div className="bg-secondary bg-opacity-10 py-4 my-5 rounded">
   <div className="container">
     <div className="row">
       {/* คอลัมน์ที่ 1 */}
